@@ -64,19 +64,7 @@ export const addBalloon = createAsyncThunk<
 	'balloons/addBalloon',
 	async ({ balloon, addBallonRequest }, { rejectWithValue }) => {
 		try {
-			return await addBallonRequest({
-				id: balloon.id,
-				name: balloon.name,
-				description: balloon.description,
-				type: balloon.type,
-				color: balloon.color,
-				position: {
-					altitude: balloon.position!.altitude,
-					latitude: balloon.position!.latitude,
-					longitude: balloon.position!.longitude,
-				},
-			});
-			// return await addBallonRequest(balloon);
+			return await addBallonRequest(balloon);
 		} catch (err) {
 			return rejectWithValue(errorHandler(err));
 		}
