@@ -13,12 +13,12 @@ namespace rest_server.Services
 {
     public class UsersService
     {
-         private readonly IMongoCollection<User> _usersCollection;
+        private readonly IMongoCollection<User> _usersCollection;
         private readonly IConfiguration _configuration;
 
 
         public UsersService(
-            IOptions<AirBalloonsDatabaseSettings> airBalloonsDatabaseSettings,IConfiguration configuration)
+            IOptions<AirBalloonsDatabaseSettings> airBalloonsDatabaseSettings, IConfiguration configuration)
         {
             _configuration = configuration;
 
@@ -32,11 +32,12 @@ namespace rest_server.Services
                 airBalloonsDatabaseSettings.Value.UsersCollectionName);
         }
 
-        public async Task<Result<UserDTO>> Login(UserCredentialsDTO userCred){
+        public async Task<Result<UserDTO>> Login(UserCredentialsDTO userCred)
+        {
             User foundUser = await _usersCollection.Find(user => user.Username == userCred.Username).FirstOrDefaultAsync();
-            if(foundUser == null || !BCrypt.Net.BCrypt.Verify(userCred.Password, foundUser.Password))
-                    return Result<UserDTO>.Failure(ErrorCodes.INCORRECT_CREDENTIALS_403);
-            return Result<UserDTO>.Success(new UserDTO(foundUser,_configuration.GetSection("JWT_Secret").ToString()));
+            if (foundUser == null || !BCrypt.Net.BCrypt.Verify(userCred.Password, foundUser.Password))
+                return Result<UserDTO>.Failure(ErrorMessages.INCORRECT_CREDENTIALS, 401);
+            return Result<UserDTO>.Success(new UserDTO(foundUser, _configuration.GetSection("JWT_Secret").ToString()), 200);
         }
     }
 }
