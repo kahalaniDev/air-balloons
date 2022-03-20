@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { AppDispatch } from '../../../infrastructure/redux/store';
-import { logout } from '../../account/slices/accountSlice';
 import { IAppError } from '../../../models/interfaces';
 import { IBalloons, IBalloon, IPosition } from '../models/interfaces';
-import { BalloonColor, BalloonType } from '../models/enums';
-import { DEFAULT_BALLOON_ALTITUDE } from '../utils/constants';
-import Position from '../models/Position';
-import Balloon from '../models/Balloon';
 import { errorHandler } from '../../../infrastructure/redux/errorHandler';
 
 export const initialState: {
