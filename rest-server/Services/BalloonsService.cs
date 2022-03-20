@@ -62,7 +62,7 @@ namespace rest_server.Services
             {
                 bool isExistBalloon = balloon.Id != "";
                 bool isInputValid = await isNameUnique(balloon, isExistBalloon);
-                if (!isInputValid) Result<Balloon>.Failure(ErrorMessages.DUPLICATE_NAME, 409);
+                if (!isInputValid) return Result<BalloonDTO>.Failure(ErrorMessages.DUPLICATE_NAME, 409);
                 Balloon addedBalloon;
                 if (isExistBalloon) addedBalloon = await UpdateAsync(balloon);
                 else addedBalloon = await CreateAsync(balloon);
@@ -71,7 +71,6 @@ namespace rest_server.Services
             catch
             {
                 return Result<BalloonDTO>.Failure(ErrorMessages.INTERNAL_ERROR, 500);
-
             }
         }
 

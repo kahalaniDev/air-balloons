@@ -10,11 +10,19 @@ namespace API.Controllers
     {
         protected ActionResult HandleResult<T>(Result<T> result)
         {
-            // if (result == null) return NotFound();
-            // if (result.IsSuccess && result.Value != null) return Ok(result.Value);
-            // if (result.IsSuccess && result.Value == null) return NotFound();
-            // // return BadRequest(result.Error);
-            return Unauthorized();
+            switch (result.StatusCode)
+            {
+                case 200:
+                    return Ok(result.Value);
+                case 401:
+                    return Unauthorized(result.ErrorMessage);
+                case 404:
+                    return NotFound(result.ErrorMessage);
+                case 409:
+                    return Conflict(result.ErrorMessage);
+                default:
+                    return StatusCode(result.StatusCode, result.ErrorMessage);
+            }
         }
     }
 }
