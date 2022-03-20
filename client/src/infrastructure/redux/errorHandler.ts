@@ -18,31 +18,13 @@ export const errorHandler = (err: unknown) => {
 };
 
 const axiosErrorBuilder = (axiosError: AxiosError) => {
-	console.log(axiosError);
-	const statusText = axiosError.response?.statusText
-		? axiosError.response!.statusText
-		: '';
 	const statusCode = axiosError.response!.status;
-	switch (statusText) {
-		case 'Not Found':
-			return { statusCode, message: axiosError.response!.data };
-		case 'Bad Request':
-			return { statusCode, message: axiosError.response!.data };
-		case 'Conflict':
-			return { statusCode, message: axiosError.response!.data };
-		case 'Unauthorized':
-			return { statusCode, message: axiosError.response!.data };
+	switch (statusCode) {
+		case 401:
+		case 409:
 		default:
 			return { statusCode, message: INTERNAL_ERR_MSG };
 	}
-	// return {
-	//   statusCode: axiosError.response?.status
-	//     ? axiosError.response?.data?.statusCode
-	//     : axiosError.code,
-	//   message: axiosError.response?.data?.message
-	//     ? axiosError.response?.data?.message
-	//     : INTERNAL_ERR_MSG,
-	// };
 };
 
 const apolloErrorBuilder = (apolloError: ApolloError): IAppError => {
