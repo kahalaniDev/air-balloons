@@ -1,0 +1,10 @@
+fix
+check for Map redux problem
+fix Balloon bug on addBalloonRest and clear baloonSlice imports
+check code from Balloon FormButton
+try to short BalloonForm
+fix test files
+change errorhandler to  supoort both server
+
+check if works
+
