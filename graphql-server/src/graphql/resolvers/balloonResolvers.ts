@@ -3,8 +3,7 @@ import Balloon from '../../models/balloon';
 import { addBalloon } from '../../controllers/addBalloon';
 import { isAuth } from '../../utils/isAuth';
 import { validateBalloon } from '../../validators/validateBalloon';
-import { UserInputError } from 'apollo-server-core';
-import { ErrorMessages } from '../../utils/constants';
+import { getBalloon } from '../../controllers/getBalloon';
 
 const resolvers = {
 	Query: {
@@ -18,12 +17,7 @@ const resolvers = {
 			{ token }: { token: string }
 		) => {
 			await isAuth(token);
-			const balloon = await Balloon.findById(balloonId);
-			if (!balloon)
-				throw new UserInputError(ErrorMessages.BalloonNotFound, {
-					codeNum: 404,
-				});
-			return balloon;
+			return await getBalloon(balloonId);
 		},
 	},
 	Mutation: {
@@ -34,7 +28,7 @@ const resolvers = {
 		) => {
 			validateBalloon(balloon);
 			await isAuth(token);
-			return addBalloon(balloon);
+			return await addBalloon(balloon);
 		},
 	},
 };
