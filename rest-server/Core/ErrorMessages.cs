@@ -9,6 +9,8 @@ namespace rest_server.Core
     {
         public const string INCORRECT_CREDENTIALS = "Incorrect username or password";
         public const string DUPLICATE_NAME = "Name already exists";
+        public const string BALLOON_NOT_FOUND = "Ballon doesnt exist";
+
         public const string INTERNAL_ERROR = "Server internal problem";
     }
 }

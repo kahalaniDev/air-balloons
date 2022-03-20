@@ -43,20 +43,36 @@ namespace rest_server.Services
         }
         public async Task<Result<BalloonDTO>> GetAsync(string balloonId)
         {
+            try
+            {
+                Balloon balloon = await _balloonsCollection.Find(balloon => balloon.Id == balloonId).FirstOrDefaultAsync();
+                if (balloon == null) return Result<BalloonDTO>.Failure(ErrorMessages.BALLOON_NOT_FOUND, 404);
+                return Result<BalloonDTO>.Success(new BalloonDTO(balloon), 200);
+            }
+            catch
+            {
+                return Result<BalloonDTO>.Failure(ErrorMessages.INTERNAL_ERROR, 500);
 
-            Balloon balloon = await _balloonsCollection.Find(balloon => balloon.Id == balloonId).FirstOrDefaultAsync();
-            return Result<BalloonDTO>.Success(new BalloonDTO(balloon), 200);
+            }
         }
 
         public async Task<Result<BalloonDTO>> AddAsync(Balloon balloon)
         {
-            bool isExistBalloon = balloon.Id != "";
-            bool isInputValid = await isNameUnique(balloon, isExistBalloon);
-            if (!isInputValid) Result<Balloon>.Failure(ErrorMessages.DUPLICATE_NAME, 409);
-            Balloon addedBalloon;
-            if (isExistBalloon) addedBalloon = await UpdateAsync(balloon);
-            else addedBalloon = await CreateAsync(balloon);
-            return Result<BalloonDTO>.Success(new BalloonDTO(addedBalloon), 200);
+            try
+            {
+                bool isExistBalloon = balloon.Id != "";
+                bool isInputValid = await isNameUnique(balloon, isExistBalloon);
+                if (!isInputValid) Result<Balloon>.Failure(ErrorMessages.DUPLICATE_NAME, 409);
+                Balloon addedBalloon;
+                if (isExistBalloon) addedBalloon = await UpdateAsync(balloon);
+                else addedBalloon = await CreateAsync(balloon);
+                return Result<BalloonDTO>.Success(new BalloonDTO(addedBalloon), 200);
+            }
+            catch
+            {
+                return Result<BalloonDTO>.Failure(ErrorMessages.INTERNAL_ERROR, 500);
+
+            }
         }
 
         private async Task<bool> isNameUnique(Balloon balloon, bool isExistBalloon)

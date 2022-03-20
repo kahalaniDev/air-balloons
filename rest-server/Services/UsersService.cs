@@ -34,10 +34,18 @@ namespace rest_server.Services
 
         public async Task<Result<UserDTO>> Login(UserCredentialsDTO userCred)
         {
-            User foundUser = await _usersCollection.Find(user => user.Username == userCred.Username).FirstOrDefaultAsync();
-            if (foundUser == null || !BCrypt.Net.BCrypt.Verify(userCred.Password, foundUser.Password))
-                return Result<UserDTO>.Failure(ErrorMessages.INCORRECT_CREDENTIALS, 401);
-            return Result<UserDTO>.Success(new UserDTO(foundUser, _configuration.GetSection("JWT_Secret").ToString()), 200);
+            try
+            {
+                User foundUser = await _usersCollection.Find(user => user.Username == userCred.Username).FirstOrDefaultAsync();
+                if (foundUser == null || !BCrypt.Net.BCrypt.Verify(userCred.Password, foundUser.Password))
+                    return Result<UserDTO>.Failure(ErrorMessages.INCORRECT_CREDENTIALS, 401);
+                return Result<UserDTO>.Success(new UserDTO(foundUser, _configuration.GetSection("JWT_Secret").ToString()), 200);
+            }
+            catch
+            {
+                return Result<UserDTO>.Failure(ErrorMessages.INTERNAL_ERROR, 500);
+
+            }
         }
     }
 }
