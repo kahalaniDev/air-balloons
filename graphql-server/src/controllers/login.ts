@@ -10,8 +10,7 @@ export const login = async (username: string, password: string) => {
 			codeNum: 401,
 		});
 	}
-
-	return { username, token: createToken('username', username, '7w') };
+	return { username, token: createToken('username', username, '7d') };
 };
 
 const createToken = (dataName: string, data: string, expriesTime: string) => {

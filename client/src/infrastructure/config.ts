@@ -1,6 +1,6 @@
 export enum SERVER_TYPE {
-  APOLLO,
-  REST,
+	APOLLO,
+	REST,
 }
 
 export let ACTIVE_SERVER = SERVER_TYPE.REST;
