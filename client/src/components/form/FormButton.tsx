@@ -3,14 +3,14 @@ import { Box, Button, CircularProgress } from "@mui/material";
 
 type Props = {
   loading: boolean;
-  handleSubmit: (evt: React.FormEvent) => void;
+  handleSubmit?: (evt: React.FormEvent) => void;
   title: string;
   disabled?: boolean;
 };
 
 const FormButton: React.FC<Props> = ({
   loading,
-  handleSubmit,
+  handleSubmit = () => {},
   title,
   disabled = false,
 }) => {
@@ -21,7 +21,8 @@ const FormButton: React.FC<Props> = ({
       ) : (
         <Button
           disabled={disabled}
-          onMouseDown={handleSubmit}
+          type="submit"
+          // onMouseDown={handleSubmit}
           fullWidth
           size="large"
           variant="contained"

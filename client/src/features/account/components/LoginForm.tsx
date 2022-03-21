@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
 import useAppDispatch from "../../../hooks/useAppDispatch";
 import useAppSelector from "../../../hooks/useAppSelector";
-import useInput from "../../../hooks/useInput";
 import { login, resetError } from "../slices/accountSlice";
 import { loginGraphql } from "../api/login/loginGraphql";
 import { loginRest } from "../api/login/loginRest";
-import { validateUsername, validatePassword } from "../utils/validators";
+import { validationLoginSchema } from "../utils/validators";
 import { SERVER_TYPE, ACTIVE_SERVER } from "../../../infrastructure/config";
 import { IUserCredentials } from "../models/interfaces";
 import FormError from "../../../components/form/FormError";
 import { Box, TextField } from "@mui/material";
 import FormButton from "../../../components/form/FormButton";
+import { useFormik } from "formik";
 
 type Props = {};
 
@@ -28,32 +28,17 @@ const LoginForm: React.FC<Props> = () => {
     error: state.account.error,
     loading: state.account.loading,
   }));
-  const [
-    username,
-    handleUsernameChange,
-    handleUsernameBlur,
-    isUsernameValid,
-    usernameError,
-  ] = useInput("", validateUsername);
 
-  const [
-    password,
-    handlePasswordChange,
-    handlePasswordBlur,
-    isPasswordValid,
-    passwordError,
-  ] = useInput("", validatePassword);
-
-  const handleSubmit = async (evt: React.FormEvent) => {
-    const passwordValid = isPasswordValid();
-    const usernameValid = isUsernameValid();
-    if (usernameValid && passwordValid) {
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: validationLoginSchema,
+    onSubmit: async (userCred) => {
       const resultAction = await dispatch(
         login({
-          userCred: {
-            username,
-            password,
-          },
+          userCred,
           loginRequest:
             ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
               ? (userCredentials: IUserCredentials) =>
@@ -65,8 +50,8 @@ const LoginForm: React.FC<Props> = () => {
       if (login.fulfilled.match(resultAction)) navigate("/");
       else if (!formErrorCodes.includes(resultAction.payload!.statusCode))
         setPopupOpen(true);
-    }
-  };
+    },
+  });
 
   useEffect(() => {
     return () => {
@@ -75,42 +60,38 @@ const LoginForm: React.FC<Props> = () => {
   }, [dispatch]);
 
   return (
-    <Box component="form" noValidate sx={{ mt: 1 }} data-testid="form">
+    <Box
+      component="form"
+      noValidate
+      sx={{ mt: 1 }}
+      data-testid="form"
+      onSubmit={formik.handleSubmit}
+    >
       <TextField
         margin="normal"
         disabled={loading}
-        value={username}
-        onChange={handleUsernameChange}
-        onBlur={handleUsernameBlur}
-        error={usernameError ? true : false}
-        helperText={usernameError}
+        {...formik.getFieldProps("username")}
+        error={formik.touched.username && Boolean(formik.errors.username)}
+        helperText={formik.touched.username && formik.errors.username}
         fullWidth
         id="username"
         label="Username"
-        name="username"
         autoComplete="username"
         autoFocus
       />
       <TextField
         margin="normal"
         disabled={loading}
-        value={password}
-        onBlur={handlePasswordBlur}
-        error={passwordError ? true : false}
-        helperText={passwordError}
+        {...formik.getFieldProps("password")}
+        error={formik.touched.password && Boolean(formik.errors.password)}
+        helperText={formik.touched.password && formik.errors.password}
         fullWidth
-        name="password"
         label="Password"
         type="password"
         id="password"
-        onChange={handlePasswordChange}
         autoComplete="current-password"
       />
-      <FormButton
-        handleSubmit={handleSubmit}
-        title="Sign In"
-        loading={loading}
-      />
+      <FormButton title="Sign In" loading={loading} />
       <FormError
         popupOpen={popupOpen}
         closePopup={() => setPopupOpen(false)}

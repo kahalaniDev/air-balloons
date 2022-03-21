@@ -22,6 +22,7 @@
     "axios-mock-adapter": "^1.20.0",
     "cesium": "^1.90.0",
     "craco-cesium": "^1.2.0",
+    "formik": "^2.2.9",
     "graphql": "^16.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -32,7 +33,8 @@
     "resium": "^1.14.3",
     "typescript": "^4.5.5",
     "uuid": "^8.3.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "craco start",
