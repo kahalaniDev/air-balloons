@@ -16,10 +16,9 @@ builder.Services.AddCors(opt =>
 builder.Services.AddControllers().AddFluentValidation(s =>
     s.RegisterValidatorsFromAssemblyContaining<Program>()
 );
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-//databes confi
+//database config
 builder.Services.Configure<AirBalloonsDatabaseSettings>(
 builder.Configuration.GetSection("AirBalloonsDatabase"));
 builder.Services.AddSingleton<UsersService>();

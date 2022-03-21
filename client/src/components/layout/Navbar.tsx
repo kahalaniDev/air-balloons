@@ -9,7 +9,7 @@ type Props = {};
 
 const Navbar: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
-  const { username } = useAppSelector((state) => state.account);
+  const username = useAppSelector((state) => state.account.username);
 
   const handleLogout = () => {
     dispatch(logout());

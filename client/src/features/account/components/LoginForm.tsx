@@ -24,7 +24,10 @@ const LoginForm: React.FC<Props> = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useAppSelector((state) => state.account);
+  const { loading, error } = useAppSelector((state) => ({
+    error: state.account.error,
+    loading: state.account.loading,
+  }));
   const [
     username,
     handleUsernameChange,
