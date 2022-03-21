@@ -8,7 +8,7 @@ const PositionSchema = new Schema(
     latitude: { required: true, type: Number },
     altitude: { required: true, type: Number },
   },
-  { versionKey: false }
+  { versionKey: false, _id: false }
 );
 
 const BalloonSchema = new Schema(

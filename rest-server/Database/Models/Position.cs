@@ -9,9 +9,6 @@ namespace rest_server.Database.Models
 {
     public class Position
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } 
         [BsonElement("longitude")]
         public double Longitude { get; set; }
         [BsonElement("latitude")]
