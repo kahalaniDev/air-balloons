@@ -52,7 +52,7 @@ const LoginForm: React.FC<Props> = () => {
             password,
           },
           loginRequest:
-            ACTIVE_SERVER === SERVER_TYPE.APOLLO
+            ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
               ? (userCredentials: IUserCredentials) =>
                   loginGraphql(client, userCredentials)
               : loginRest,

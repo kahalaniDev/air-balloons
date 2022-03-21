@@ -82,7 +82,7 @@ const BalloonEntity: React.FC<Props> = ({
           getBalloon({
             balloonId: id,
             getBallonRequest:
-              ACTIVE_SERVER === SERVER_TYPE.APOLLO
+              ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
                 ? () => getBalloonGraphql(client, id)
                 : getBalloonRest,
           })

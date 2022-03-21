@@ -19,7 +19,7 @@ const HomePage = (props: Props) => {
   useEffect(() => {
     dispatch(
       getBalloons(
-        ACTIVE_SERVER === SERVER_TYPE.APOLLO
+        ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
           ? () => getBalloonsGraphql(client)
           : getBalloonsRest
       )
