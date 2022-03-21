@@ -2,10 +2,10 @@ import React from "react";
 import { MockedProvider } from "@apollo/client/testing";
 import { ApolloProvider as ApolloNativeProvider } from "@apollo/client";
 import { apolloClient } from "../../infrastructure/apollo/client";
-import { loginGraphqlMock } from "../../features/account/api/login/mock/loginGraphqlMock";
-import { getBalloonsGraphqlMock } from "../../features/balloons/api/getBalloons/mock/getBalloonsGraphqlMock";
-import { getBalloonGraphqlMock } from "../../features/balloons/api/getBalloon/mock/getBalloonGraphqlMock";
-import { addBalloonGraphqlMock } from "../../features/balloons/api/addBalloon/mock/addBalloonGraphqlMock";
+import { loginGraphqlMock } from "../../features/account/api/login/loginGraphql";
+import { getBalloonsGraphqlMock } from "../../features/balloons/api/getBalloons/getBalloonsGraphql";
+import { getBalloonGraphqlMock } from "../../features/balloons/api/getBalloon/getBalloonGraphql";
+import { addBalloonGraphqlMock } from "../../features/balloons/api/addBalloon/addBalloonGraphql";
 
 interface Props {
   useMocks?: boolean;

@@ -1,4 +1,7 @@
 import { ApolloClient, gql } from "@apollo/client";
+import { MockedResponse } from "@apollo/client/testing";
+import { getBalloons } from "../common/helperFunctions";
+import { IBalloons } from "../../models/interfaces";
 
 export const GET_BALLOONS_QUERY = gql`
   query GetBalloons {
@@ -24,3 +27,34 @@ export const getBalloonsGraphql = async (client: ApolloClient<object>) => {
 
   return data.getBalloons;
 };
+
+type GetBalloonsResponse = {
+  getBalloons: IBalloons;
+};
+
+export const getBalloonsGraphqlMock: MockedResponse<GetBalloonsResponse>[] = [
+  {
+    request: {
+      query: GET_BALLOONS_QUERY,
+    },
+    result: {
+      data: { getBalloons: getBalloons() },
+    },
+  },
+  {
+    request: {
+      query: GET_BALLOONS_QUERY,
+    },
+    result: {
+      data: { getBalloons: getBalloons() },
+    },
+  },
+  {
+    request: {
+      query: GET_BALLOONS_QUERY,
+    },
+    result: {
+      data: { getBalloons: getBalloons() },
+    },
+  },
+];
