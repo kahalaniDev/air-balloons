@@ -22,15 +22,18 @@ export const login = createAsyncThunk<
     loginRequest: (userCred: IUserCredentials) => Promise<IUserData>;
   },
   { rejectValue: IAppError }
->("account/login", async ({ userCred, loginRequest }, { rejectWithValue }) => {
-  try {
-    const data = await loginRequest(userCred);
-    localStorage.setItem("user", JSON.stringify(data.token));
-    return data.username;
-  } catch (err) {
-    return rejectWithValue(errorHandler(err));
+>(
+  "account/login",
+  async ({ userCred, loginRequest }, { rejectWithValue, dispatch }) => {
+    try {
+      const data = await loginRequest(userCred);
+      localStorage.setItem("user", JSON.stringify(data.token));
+      return data.username;
+    } catch (err) {
+      return rejectWithValue(errorHandler(err));
+    }
   }
-});
+);
 
 export const logout = createAsyncThunk<
   void,

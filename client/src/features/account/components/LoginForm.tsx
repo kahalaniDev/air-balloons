@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
+import { useFormik } from "formik";
 import useAppDispatch from "../../../hooks/useAppDispatch";
 import useAppSelector from "../../../hooks/useAppSelector";
 import { login, resetError } from "../slices/accountSlice";
@@ -12,7 +13,6 @@ import { IUserCredentials } from "../models/interfaces";
 import FormError from "../../../components/form/FormError";
 import { Box, TextField } from "@mui/material";
 import FormButton from "../../../components/form/FormButton";
-import { useFormik } from "formik";
 
 type Props = {};
 

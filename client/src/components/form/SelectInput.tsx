@@ -11,7 +11,8 @@ import {
 type Props = {
   label: string;
   items: string[];
-  error: string;
+  error?: boolean;
+  errorText?: string | false;
   selectInputProps: SelectProps<string>;
   disabled?: boolean;
 };
@@ -20,6 +21,7 @@ const SelectInput: React.FC<Props> = ({
   label,
   items,
   error,
+  errorText,
   selectInputProps,
   disabled,
 }) => {
@@ -51,7 +53,7 @@ const SelectInput: React.FC<Props> = ({
           </MenuItem>
         ))}
       </Select>
-      {error && <FormHelperText>{error}</FormHelperText>}
+      {error && <FormHelperText>{errorText}</FormHelperText>}
     </FormControl>
   );
 };
