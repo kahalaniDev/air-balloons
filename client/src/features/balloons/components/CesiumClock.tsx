@@ -28,7 +28,7 @@ const CesiumClock: React.FC<Props> = ({ mapRef, start, stop }) => {
       const coords: IPosition = {
         latitude: MathCessium.toDegrees(cartographicLocation.latitude),
         longitude: MathCessium.toDegrees(cartographicLocation.longitude),
-        altitude: MathCessium.toDegrees(cartographicLocation.height),
+        altitude: cartographicLocation.height,
       };
       dispatch(updateActiveBalloonPos(coords));
     }
