@@ -13,7 +13,7 @@ const BalloonList: React.FC<Props> = ({ balloons, toggleCreateBalloon }) => {
     <Stack py={2}>
       <Button
         variant="contained"
-        sx={{ mr: 2, alignSelf: "flex-end" }}
+        sx={{ mx: 2, alignSelf: "flex-end" }}
         onClick={toggleCreateBalloon}
       >
         Create Balloon
