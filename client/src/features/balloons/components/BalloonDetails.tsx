@@ -18,8 +18,17 @@ const BalloonDetails: React.FC<Props> = ({ balloon, toggleEditBalloon }) => {
 
   return (
     <Box height="100%">
-      <Box display="flex" justifyContent="space-between" p={2}>
-        <Button variant="contained" onClick={() => dispatch(resetBalloon())}>
+      <Box
+        display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
+        justifyContent="space-between"
+        p={2}
+      >
+        <Button
+          variant="contained"
+          sx={{ mb: { sm: 2, md: 0 } }}
+          onClick={() => dispatch(resetBalloon())}
+        >
           Back
         </Button>
         <Button variant="contained" onClick={toggleEditBalloon}>
