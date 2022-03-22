@@ -15,7 +15,7 @@ export const validationBalloonSchema = yup.object({
   color: yup.string().required("Color is required"),
   latitude: yup
     .number()
-    .typeError("Longitude must be a number")
+    .typeError("Latitude must be a number")
     .min(-90, "Latitude must be between -90 and 90")
     .max(90, "Latitude must be between -90 and 90"),
   longitude: yup

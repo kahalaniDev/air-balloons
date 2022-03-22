@@ -8,7 +8,7 @@ import {
   SelectProps,
 } from "@mui/material";
 
-type Props = {
+export type SelectInputProps = {
   label: string;
   items: string[];
   error?: boolean;
@@ -17,7 +17,7 @@ type Props = {
   disabled?: boolean;
 };
 
-const SelectInput: React.FC<Props> = ({
+const SelectInput: React.FC<SelectInputProps> = ({
   label,
   items,
   error,

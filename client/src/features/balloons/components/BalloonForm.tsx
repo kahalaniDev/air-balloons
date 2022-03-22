@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/client";
 import useAppDispatch from "../../../hooks/useAppDispatch";
 import { useFormik, FormikHelpers } from "formik";
@@ -8,21 +8,22 @@ import { addBalloonGraphql } from "../api/addBalloon/addBalloonGraphql";
 import { addBalloonRest } from "../api/addBalloon/addBalloonRest";
 import { getBalloonsGraphql } from "../api/getBalloons/getBalloonsGraphql";
 import { getBalloonsRest } from "../api/getBalloons/getBalloonsRest";
-// import useInput from "../../../hooks/useInput";
-import useSelectInput from "../../../hooks/useSelectInput";
 import { IAppError } from "../../../models/interfaces";
 import { IBalloon, IPosition } from "../models/interfaces";
-import Position from "../models/Position";
 import Balloon from "../models/Balloon";
 import { BalloonColor, BalloonType } from "../models/enums";
 import { ACTIVE_SERVER, SERVER_TYPE } from "../../../infrastructure/config";
 import { validationBalloonSchema } from "../utils/validators";
-import BalloonInfoInputs from "./BalloonInfoInputs";
-import BalloonPositionInputs from "./BalloonPositionInputs";
 import FormButton from "../../../components/form/FormButton";
 import FormError from "../../../components/form/FormError";
-import { Grid, TextField } from "@mui/material";
 import SelectInput from "../../../components/form/SelectInput";
+import { capitalizeFirstLetter } from "../../../utils/helperFunctions";
+import {
+  balloonInputArr,
+  BalloonSelectInputProps,
+  BalloonTextFieldProps,
+} from "../utils/balloonFormInputs";
+import { Grid, TextField } from "@mui/material";
 
 type Props = {
   onSubmitFinish?: () => void;
@@ -35,7 +36,7 @@ type Props = {
 const formErrorCodes = [404];
 const ignoreErrorCodes = [409, 401];
 
-type BalloonFormValues = {
+export type BalloonFormValues = {
   name: string;
   description: string;
   latitude: string;
@@ -59,8 +60,31 @@ const BalloonForm: React.FC<Props> = ({
     inputBalloon: BalloonFormValues,
     FormikHelpers: FormikHelpers<BalloonFormValues>
   ) => {
+    const resultAction = await dispatch(
+      addBalloon({
+        balloon: createBalloon(inputBalloon),
+        addBallonRequest:
+          ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
+            ? (balloon: IBalloon) => addBalloonGraphql(client, balloon)
+            : addBalloonRest,
+      })
+    );
+    if (addBalloon.fulfilled.match(resultAction)) handleAddBalloonSuccess();
+    else if (
+      !formErrorCodes.includes(resultAction.payload!.statusCode) &&
+      !ignoreErrorCodes.includes(resultAction.payload!.statusCode)
+    )
+      handleGlobalError();
+    else if (resultAction.payload!.statusCode === 409) {
+      FormikHelpers.setFieldError("name", resultAction.payload!.message);
+    } else if (resultAction.payload!.statusCode === 401) {
+      handleUnauthorized();
+    }
+  };
+
+  const createBalloon = (inputBalloon: BalloonFormValues) => {
     const balloonId = (balloon ? balloon.id : "") as string;
-    const newBalloon = new Balloon(
+    return new Balloon(
       balloonId,
       inputBalloon.name,
       inputBalloon.description,
@@ -69,35 +93,22 @@ const BalloonForm: React.FC<Props> = ({
       inputBalloon.longitude,
       inputBalloon.latitude
     );
-    const resultAction = await dispatch(
-      addBalloon({
-        balloon: newBalloon,
-        addBallonRequest:
-          ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
-            ? (balloon: IBalloon) => addBalloonGraphql(client, balloon)
-            : addBalloonRest,
-      })
-    );
-    if (addBalloon.fulfilled.match(resultAction)) {
-      onSubmitFinish && onSubmitFinish();
-      dispatch(
-        getBalloons(
-          ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
-            ? () => getBalloonsGraphql(client)
-            : getBalloonsRest
-        )
-      );
-    } else if (
-      !formErrorCodes.includes(resultAction.payload!.statusCode) &&
-      !ignoreErrorCodes.includes(resultAction.payload!.statusCode)
-    )
-      setPopupOpen(true);
-    else if (resultAction.payload!.statusCode === 409) {
-      FormikHelpers.setFieldError("name", resultAction.payload!.message);
-    } else if (resultAction.payload!.statusCode === 401) {
-      dispatch(logout());
-    }
   };
+
+  const handleAddBalloonSuccess = () => {
+    onSubmitFinish && onSubmitFinish();
+    dispatch(
+      getBalloons(
+        ACTIVE_SERVER === SERVER_TYPE.GRAPHQL
+          ? () => getBalloonsGraphql(client)
+          : getBalloonsRest
+      )
+    );
+  };
+
+  const handleGlobalError = () => setPopupOpen(true);
+
+  const handleUnauthorized = () => dispatch(logout());
 
   const formik = useFormik({
     initialValues: {
@@ -123,6 +134,45 @@ const BalloonForm: React.FC<Props> = ({
     );
   };
 
+  const generateTextField = (balloonInput: BalloonTextFieldProps) => (
+    <TextField
+      margin="normal"
+      disabled={loading}
+      {...formik.getFieldProps(balloonInput.name)}
+      error={
+        formik.touched[balloonInput.name] &&
+        Boolean(formik.errors[balloonInput.name])
+      }
+      helperText={
+        formik.touched[balloonInput.name] && formik.errors[balloonInput.name]
+      }
+      fullWidth
+      label={capitalizeFirstLetter(balloonInput.name)}
+      {...balloonInput.textFieldProps}
+    />
+  );
+
+  const generateSelectInput = (balloonInput: BalloonSelectInputProps) => (
+    <SelectInput
+      label={capitalizeFirstLetter(balloonInput.name)}
+      items={balloonInput.items}
+      error={
+        formik.touched[balloonInput.name] &&
+        Boolean(formik.errors[balloonInput.name])
+      }
+      errorText={
+        formik.touched[balloonInput.name] && formik.errors[balloonInput.name]
+      }
+      disabled={loading}
+      selectInputProps={{
+        name: balloonInput.name,
+        value: formik.values[balloonInput.name],
+        onChange: formik.handleChange,
+        onBlur: formik.handleBlur,
+      }}
+    />
+  );
+
   useEffect(() => {
     return () => {
       dispatch(resetError());
@@ -143,82 +193,14 @@ const BalloonForm: React.FC<Props> = ({
       }}
       maxWidth={450}
     >
-      <Grid item xs={12}>
-        <TextField
-          margin="normal"
-          disabled={loading}
-          {...formik.getFieldProps("name")}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-          fullWidth
-          label="Name"
-          autoFocus
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          margin="normal"
-          disabled={loading}
-          {...formik.getFieldProps("description")}
-          error={
-            formik.touched.description && Boolean(formik.errors.description)
-          }
-          helperText={formik.touched.description && formik.errors.description}
-          fullWidth
-          label="Description"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <SelectInput
-          label="Type"
-          items={Object.keys(BalloonType)}
-          error={formik.touched.type && Boolean(formik.errors.type)}
-          errorText={formik.touched.type && formik.errors.type}
-          disabled={loading}
-          selectInputProps={{
-            name: "type",
-            value: formik.values.type,
-            onChange: formik.handleChange,
-            onBlur: formik.handleBlur,
-          }}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <SelectInput
-          label="color"
-          items={Object.keys(BalloonColor)}
-          error={formik.touched.color && Boolean(formik.errors.color)}
-          errorText={formik.touched.color && formik.errors.color}
-          disabled={loading}
-          selectInputProps={{
-            name: "color",
-            value: formik.values.color,
-            onChange: formik.handleChange,
-            onBlur: formik.handleBlur,
-          }}
-        />
-      </Grid>
+      {balloonInputArr.map((balloonInput) => (
+        <Grid item {...balloonInput.gridProps}>
+          {balloonInput.type === "TextField"
+            ? generateTextField(balloonInput)
+            : generateSelectInput(balloonInput)}
+        </Grid>
+      ))}
 
-      <Grid item xs={6}>
-        <TextField
-          margin="normal"
-          disabled={loading}
-          {...formik.getFieldProps("latitude")}
-          error={formik.touched.latitude && Boolean(formik.errors.latitude)}
-          helperText={formik.touched.latitude && formik.errors.latitude}
-          label="Latitude"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          margin="normal"
-          disabled={loading}
-          {...formik.getFieldProps("longitude")}
-          error={formik.touched.longitude && Boolean(formik.errors.longitude)}
-          helperText={formik.touched.longitude && formik.errors.longitude}
-          label="Longitude"
-        />
-      </Grid>
       <Grid item xs={12}>
         <FormButton
           disabled={!isFormValuesChanged() || !formik.isValid}

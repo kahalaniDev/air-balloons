@@ -18,7 +18,6 @@ const Map: React.FC<Props> = () => {
   const list = useAppSelector((state) => state.balloons.list);
   const mapRef = useRef<CesiumComponentRef<CesiumViewer>>(null);
   const dispatch = useAppDispatch();
-
   Ion.defaultAccessToken = process.env.REACT_APP_CESIUM_TOKEN as string;
   const worldTerrain = createWorldTerrain();
 
