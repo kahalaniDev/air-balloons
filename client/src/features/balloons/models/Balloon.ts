@@ -1,5 +1,6 @@
 import { IBalloon, IPosition } from "./interfaces";
 import { BalloonType, BalloonColor } from "./enums";
+import Position from "./Position";
 
 export default class Balloon implements IBalloon {
   id: string;
@@ -15,13 +16,14 @@ export default class Balloon implements IBalloon {
     description: string,
     type: BalloonType,
     color: BalloonColor,
-    position: IPosition
+    longitude: string,
+    latitude: string
   ) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.type = type;
     this.color = color;
-    this.position = position;
+    this.position = new Position(longitude, latitude);
   }
 }

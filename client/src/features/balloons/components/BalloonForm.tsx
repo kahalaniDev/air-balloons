@@ -60,17 +60,14 @@ const BalloonForm: React.FC<Props> = ({
     FormikHelpers: FormikHelpers<BalloonFormValues>
   ) => {
     const balloonId = (balloon ? balloon.id : "") as string;
-    const balloonPos = new Position(
-      parseFloat(inputBalloon.longitude),
-      parseFloat(inputBalloon.latitude)
-    );
     const newBalloon = new Balloon(
       balloonId,
       inputBalloon.name,
       inputBalloon.description,
       inputBalloon.type as BalloonType,
       inputBalloon.color as BalloonColor,
-      balloonPos
+      inputBalloon.longitude,
+      inputBalloon.latitude
     );
     const resultAction = await dispatch(
       addBalloon({
