@@ -75,11 +75,17 @@ const BalloonForm: React.FC<Props> = ({
       !ignoreErrorCodes.includes(resultAction.payload!.statusCode)
     )
       handleGlobalError();
-    else if (resultAction.payload!.statusCode === 409) {
-      FormikHelpers.setFieldError("name", resultAction.payload!.message);
-    } else if (resultAction.payload!.statusCode === 401) {
-      handleUnauthorized();
-    }
+    else
+      switch (resultAction.payload!.statusCode) {
+        case 409:
+          FormikHelpers.setFieldError("name", resultAction.payload!.message);
+          break;
+        case 401:
+          dispatch(logout());
+          break;
+        default:
+          break;
+      }
   };
 
   const createBalloon = (inputBalloon: BalloonFormValues) => {
@@ -107,8 +113,6 @@ const BalloonForm: React.FC<Props> = ({
   };
 
   const handleGlobalError = () => setPopupOpen(true);
-
-  const handleUnauthorized = () => dispatch(logout());
 
   const formik = useFormik({
     initialValues: {
