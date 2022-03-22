@@ -14,7 +14,6 @@ namespace rest_server.Middlewares
 		{
 			// skip authorization if action is decorated with [AllowAnonymous] attribute
 			var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
-            Console.WriteLine("AuthorizeAttribute  allowAnonymous:" + allowAnonymous);
 			if (allowAnonymous)
 				return;
 
