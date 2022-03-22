@@ -21,7 +21,6 @@ namespace rest_server.Middlewares
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault().Split(" ").Last();
             string username = ValidateToken(token, configuration.GetSection("JWT_Secret").ToString());
-            Console.WriteLine("JwtMiddleware Invoke username: " + username);
             if (username != null)
             {
                 // attach user to context on successful jwt validation

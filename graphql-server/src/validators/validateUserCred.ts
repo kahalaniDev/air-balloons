@@ -17,7 +17,6 @@ export const validateUserCred = (userCred: {
   const { error } = userCredentialsSchemaValidator.validate(userCred);
   if (error) {
     const message = error.details.map((err) => err.message).join(",");
-    console.log(message);
     throw new UserInputError(message, { codeNum: 400 });
   }
 };
