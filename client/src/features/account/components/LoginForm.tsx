@@ -64,7 +64,6 @@ const LoginForm: React.FC<Props> = () => {
       component="form"
       noValidate
       sx={{ mt: 1 }}
-      data-testid="form"
       onSubmit={formik.handleSubmit}
     >
       <TextField
