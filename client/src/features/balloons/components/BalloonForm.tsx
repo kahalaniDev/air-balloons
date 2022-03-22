@@ -194,7 +194,11 @@ const BalloonForm: React.FC<Props> = ({
       maxWidth={450}
     >
       {balloonInputArr.map((balloonInput) => (
-        <Grid item {...balloonInput.gridProps}>
+        <Grid
+          item
+          {...balloonInput.gridProps}
+          key={`${balloonInput.name} input`}
+        >
           {balloonInput.type === "TextField"
             ? generateTextField(balloonInput)
             : generateSelectInput(balloonInput)}
