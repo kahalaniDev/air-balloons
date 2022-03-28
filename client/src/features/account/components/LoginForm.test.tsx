@@ -55,13 +55,10 @@ describe("LoginForm", () => {
     userEvent.type(screen.getByLabelText(/Password/i), "!1234567");
     expect(screen.getByRole("button", { name: /SIGN IN/i })).toBeEnabled();
     userEvent.click(screen.getByRole("button", { name: /SIGN IN/i }));
-    // eslint-disable-next-line testing-library/prefer-find-by
-    await waitFor(() => expect(screen.getByRole("circle")).toBeInTheDocument());
     await waitFor(() =>
       expect(
         screen.queryByText(/incorrect username or password/i)
       ).not.toBeInTheDocument()
     );
-    screen!.debug();
   });
 });
