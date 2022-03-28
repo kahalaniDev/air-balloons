@@ -24,22 +24,27 @@ describe("LoginForm", () => {
     expect(await screen.findByText("Username is required")).toBeInTheDocument();
     expect(await screen.findByText("Password is required")).toBeInTheDocument();
   });
-  test("check login button click with right credentials", async () => {
-    // render(
-    //   <MemoryRouter initialEntries={["/login", "/"]}>
-    //     <ApolloProvider useMocks>
-    //       <ReduxProvider store={createStore()}>
-    //         <LoginForm />
-    //       </ReduxProvider>
-    //     </ApolloProvider>
-    //   </MemoryRouter>
-    // );
-    // userEvent.type(screen.getByLabelText(/Username/i), "daniel");
-    // userEvent.type(screen.getByLabelText(/Password/i), "!1234567");
-    // userEvent.click(screen.getByRole("button", { name: /SIGN IN/i }));
-    // expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
-    // expect(
-    //   await screen.findByLabelText(/Incorrect username or password/i)
-    // ).not.toBeInTheDocument();
-  });
+  // test("check login button click with right credentials", async () => {
+  //   render(
+  //     <MemoryRouter initialEntries={["/login", "/"]}>
+  //       <ApolloProvider useMocks>
+  //         <ReduxProvider store={createStore()}>
+  //           <LoginForm />
+  //         </ReduxProvider>
+  //       </ApolloProvider>
+  //     </MemoryRouter>
+  //   );
+  //   userEvent.type(screen.getByLabelText(/Username/i), "daniel");
+  //   userEvent.type(screen.getByLabelText(/Password/i), "!1234567");
+  //   expect(
+  //     await screen.findByRole("button", { name: /SIGN IN/i })
+  //   ).toBeEnabled();
+  //   await userEvent.click(screen.getByRole("button", { name: /SIGN IN/i }));
+  //   expect(await (() => screen.queryByText(/Daniel/i))).not.toBeInTheDocument();
+  // expect(screen.queryByText("Password is required")).toBeNull();
+  // await Promise.resolve();
+  // expect(
+  //   await screen.findByLabelText(/Incorrect username or password/i)
+  // ).not.toBeInTheDocument();
+  // });
 });
