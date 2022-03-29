@@ -39,7 +39,7 @@ namespace rest_server.Services
                 User foundUser = await _usersCollection.Find(user => user.Username == userCred.Username).FirstOrDefaultAsync();
                 if (foundUser == null || !BCrypt.Net.BCrypt.Verify(userCred.Password, foundUser.Password))
                     return Result<UserDTO>.Failure(ErrorMessages.INCORRECT_CREDENTIALS, 401);
-                return Result<UserDTO>.Success(new UserDTO(foundUser, _configuration.GetSection("JWT_Secret").ToString()), 200);
+                return Result<UserDTO>.Success(new UserDTO(foundUser, _configuration["JWT_Secret"]), 200);
             }
             catch
             {

@@ -20,7 +20,7 @@ namespace rest_server.Middlewares
         public async Task Invoke(HttpContext context, IConfiguration configuration)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault().Split(" ").Last();
-            string username = ValidateToken(token, configuration.GetSection("JWT_Secret").ToString());
+            string username = ValidateToken(token, configuration["JWT_Secret"]);
             if (username != null)
             {
                 // attach user to context on successful jwt validation
@@ -33,7 +33,6 @@ namespace rest_server.Middlewares
         {
             if (token == null)
                 return null;
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secret);
             try
