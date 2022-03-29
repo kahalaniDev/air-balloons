@@ -19,12 +19,16 @@ namespace rest_server.Middlewares
 
         public async Task Invoke(HttpContext context, IConfiguration configuration)
         {
-            var token = context.Request.Headers["Authorization"].FirstOrDefault().Split(" ").Last();
-            string username = ValidateToken(token, configuration["JWT_Secret"]);
-            if (username != null)
+            string header = context.Request.Headers["Authorization"].FirstOrDefault();
+            if(header != null)
             {
-                // attach user to context on successful jwt validation
-                context.Items["User"] = username;
+                string token = header.Split(" ").Last();   
+                string username = ValidateToken(token, configuration["JWT_Secret"]);
+                    if (username != null)
+                    {
+                        // attach user to context on successful jwt validation
+                        context.Items["User"] = username;
+                    }
             }
             await _next(context);
         }
