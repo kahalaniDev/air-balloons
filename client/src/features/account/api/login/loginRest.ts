@@ -17,7 +17,6 @@ export const loginRest = async (userCred: IUserCredentials) => {
     AxiosResponse<IUserData>,
     IUserCredentials
   >("Users/login", userCred);
-  axiosClient.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
   return data;
 };
 

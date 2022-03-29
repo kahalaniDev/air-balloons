@@ -5,4 +5,4 @@ export enum SERVER_TYPE {
 
 export let ACTIVE_SERVER = SERVER_TYPE.GRAPHQL;
 
-export const USE_MOCK_SERVER = true;
+export const USE_MOCK_SERVER = false;

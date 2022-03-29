@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IAppError } from "../../../models/interfaces";
 import { IUserCredentials, IUserData } from "../models/interfaces";
 import { errorHandler } from "../../../infrastructure/redux/errorHandler";
+import { axiosClient } from "../../../infrastructure/axios/client";
 
 export const initialState: {
   isAuth: boolean;
@@ -27,6 +28,9 @@ export const login = createAsyncThunk<
   async ({ userCred, loginRequest }, { rejectWithValue, dispatch }) => {
     try {
       const data = await loginRequest(userCred);
+      axiosClient.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.token}`;
       localStorage.setItem("user", JSON.stringify(data.token));
       return data.username;
     } catch (err) {
