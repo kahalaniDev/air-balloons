@@ -12,7 +12,7 @@ namespace rest_server.Database.Validators
     {
 
        private List<String> _ColorsList = new List<String>(){"black","red","white","blue"};
-       private List<String> _TypesList = new List<String>(){"small","big","large","double"};
+       private List<String> _TypesList = new List<String>(){"small","medium","big","double"};
 
         private bool validateId(string id){
             if(id == "") return true;
