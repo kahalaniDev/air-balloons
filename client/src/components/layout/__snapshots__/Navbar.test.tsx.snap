@@ -1,36 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Navbar check if Navbar match to snapshot 1`] = `
-<DocumentFragment>
-  <header
-    class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorDefault MuiAppBar-positionStatic css-8krtud-MuiPaper-root-MuiAppBar-root"
+<header
+  className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorDefault MuiAppBar-positionStatic css-8krtud-MuiPaper-root-MuiAppBar-root"
+>
+  <div
+    className="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-1423voi-MuiToolbar-root"
   >
+    <img
+      alt="logo"
+      height={100}
+      src="logo.png"
+    />
     <div
-      class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-1423voi-MuiToolbar-root"
+      className="MuiBox-root css-k008qs"
     >
-      <img
-        alt="logo"
-        height="100"
-        src="logo.png"
-      />
-      <div
-        class="MuiBox-root css-k008qs"
+      <h5
+        className="MuiTypography-root MuiTypography-h5 css-1291kst-MuiTypography-root"
       >
-        <h5
-          class="MuiTypography-root MuiTypography-h5 css-1291kst-MuiTypography-root"
-        />
-        <button
-          class="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButtonBase-root  css-sghohy-MuiButtonBase-root-MuiButton-root"
-          tabindex="0"
-          type="button"
-        >
-          Logout
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
-        </button>
-      </div>
+        
+      </h5>
+      <button
+        className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButtonBase-root  css-sghohy-MuiButtonBase-root-MuiButton-root"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        Logout
+      </button>
     </div>
-  </header>
-</DocumentFragment>
+  </div>
+</header>
 `;
