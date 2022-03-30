@@ -7,10 +7,10 @@ import LoginPage from "../pages/LoginPage";
 
 describe("LoginPage", () => {
   beforeAll(() => {});
-  test("check ifs LoginPage match to snapshot", () => {
+  test("check if LoginPage match to snapshot", () => {
     expect(
       render(
-        <MemoryRouter initialEntries={["/login"]}>
+        <MemoryRouter>
           <ApolloProvider useMocks>
             <ReduxProvider store={createStore()}>
               <LoginPage />

@@ -7,9 +7,22 @@ import { Provider as ReduxProvider } from "react-redux";
 import { createStore } from "../../../infrastructure/redux/store";
 
 describe("LoginForm", () => {
+  test("check if LoginForm match to snapshot", () => {
+    expect(
+      render(
+        <MemoryRouter>
+          <ApolloProvider useMocks>
+            <ReduxProvider store={createStore()}>
+              <LoginForm />
+            </ReduxProvider>
+          </ApolloProvider>
+        </MemoryRouter>
+      ).asFragment()
+    ).toMatchSnapshot();
+  });
   test("validate empty inputs and showing error", async () => {
     render(
-      <MemoryRouter initialEntries={["/login"]}>
+      <MemoryRouter>
         <ApolloProvider useMocks>
           <ReduxProvider store={createStore()}>
             <LoginForm />
@@ -24,7 +37,7 @@ describe("LoginForm", () => {
 
   test("check login button click with wrong credentials", async () => {
     render(
-      <MemoryRouter initialEntries={["/login", "/"]}>
+      <MemoryRouter>
         <ApolloProvider useMocks>
           <ReduxProvider store={createStore()}>
             <LoginForm />
@@ -43,7 +56,7 @@ describe("LoginForm", () => {
 
   test("check login button click with right credentials", async () => {
     render(
-      <MemoryRouter initialEntries={["/login", "/"]}>
+      <MemoryRouter>
         <ApolloProvider useMocks>
           <ReduxProvider store={createStore()}>
             <LoginForm />
