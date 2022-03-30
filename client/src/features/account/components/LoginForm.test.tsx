@@ -6,6 +6,16 @@ import LoginForm from "./LoginForm";
 import { Provider as ReduxProvider } from "react-redux";
 import { createStore } from "../../../infrastructure/redux/store";
 
+jest.mock("../../../infrastructure/config.ts", () => ({
+  __esModule: true,
+  USE_MOCK_SERVER: true,
+  SERVER_TYPE: {
+    GRAPHQL: 0,
+    REST: 1,
+  },
+  ACTIVE_SERVER: 0,
+}));
+
 describe("LoginForm", () => {
   test("check if LoginForm match to snapshot", () => {
     expect(
