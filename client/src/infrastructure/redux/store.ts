@@ -1,21 +1,22 @@
-import { configureStore, PreloadedState } from "@reduxjs/toolkit";
-import accountReducer, {
-  initialState as accountInitialState,
-} from "../../features/account/slices/accountSlice";
-import balloonsReducer, {
-  initialState as balloonInitialState,
-} from "../../features/balloons/slices/balloonsSlice";
+import {
+  configureStore,
+  PreloadedState,
+  StateFromReducersMapObject,
+} from "@reduxjs/toolkit";
+import accountReducer from "../../features/account/slices/accountSlice";
+import balloonsReducer from "../../features/balloons/slices/balloonsSlice";
 import { isLoggedIn } from "../../features/account/slices/accountSlice";
 
-type InitialState = {
-  account?: typeof accountInitialState;
-  balloon?: typeof balloonInitialState;
-};
+const reducer = { account: accountReducer, balloons: balloonsReducer };
 
-export const createStore = (preloadedState?: PreloadedState<InitialState>) =>
+type StoreInitialState = StateFromReducersMapObject<typeof reducer>;
+
+export const createStore = (
+  preloadedState?: PreloadedState<Partial<StoreInitialState>>
+) =>
   configureStore({
     preloadedState,
-    reducer: { account: accountReducer, balloons: balloonsReducer },
+    reducer: reducer,
   });
 
 const store = createStore();
