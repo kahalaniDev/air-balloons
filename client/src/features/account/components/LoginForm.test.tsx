@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import ApolloProvider from "../../../components/apollo/ApolloProvider";
@@ -65,10 +65,11 @@ describe("LoginForm", () => {
   });
 
   test("check login button click with right credentials", async () => {
+    const store = createStore();
     render(
       <MemoryRouter>
         <ApolloProvider useMocks>
-          <ReduxProvider store={createStore()}>
+          <ReduxProvider store={store}>
             <LoginForm />
           </ReduxProvider>
         </ApolloProvider>
@@ -78,10 +79,9 @@ describe("LoginForm", () => {
     userEvent.type(screen.getByLabelText(/Password/i), "!1234567");
     expect(screen.getByRole("button", { name: /SIGN IN/i })).toBeEnabled();
     userEvent.click(screen.getByRole("button", { name: /SIGN IN/i }));
-    await waitFor(() =>
-      expect(
-        screen.queryByText(/incorrect username or password/i)
-      ).not.toBeInTheDocument()
-    );
+    await act(() => new Promise((r) => setTimeout(r, 2000)));
+    expect(
+      screen.queryByText(/incorrect username or password/i)
+    ).not.toBeInTheDocument();
   });
 });
