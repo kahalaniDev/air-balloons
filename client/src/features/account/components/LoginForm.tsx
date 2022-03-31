@@ -53,6 +53,13 @@ const LoginForm: React.FC<Props> = () => {
     },
   });
 
+  const isFormValuesChanged = () => {
+    return (
+      formik.initialValues.username !== formik.values.username ||
+      formik.initialValues.password !== formik.values.password
+    );
+  };
+
   useEffect(() => {
     return () => {
       dispatch(resetError());
@@ -90,7 +97,11 @@ const LoginForm: React.FC<Props> = () => {
         id="password"
         autoComplete="current-password"
       />
-      <FormButton title="Sign In" loading={loading} />
+      <FormButton
+        title="Sign In"
+        loading={loading}
+        disabled={!isFormValuesChanged() || !formik.isValid}
+      />
       <FormError
         popupOpen={popupOpen}
         closePopup={() => setPopupOpen(false)}

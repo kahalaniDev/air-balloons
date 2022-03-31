@@ -30,7 +30,7 @@ describe("LoginForm", () => {
       ).asFragment()
     ).toMatchSnapshot();
   });
-  test("validate empty inputs and showing error", async () => {
+  test("validate illegal inputs and showing error", async () => {
     render(
       <MemoryRouter>
         <ApolloProvider useMocks>
@@ -40,9 +40,9 @@ describe("LoginForm", () => {
         </ApolloProvider>
       </MemoryRouter>
     );
-    userEvent.click(screen.getByRole("button", { name: /SIGN IN/i }));
-    expect(await screen.findByText("Username is required")).toBeInTheDocument();
-    expect(await screen.findByText("Password is required")).toBeInTheDocument();
+    userEvent.type(screen.getByLabelText(/Username/i), "beni");
+    userEvent.type(screen.getByLabelText(/Password/i), "123456");
+    expect(await screen.findByRole("button")).toBeDisabled();
   });
 
   test("check login button click with wrong credentials", async () => {
